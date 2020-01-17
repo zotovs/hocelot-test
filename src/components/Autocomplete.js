@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import Downshift from 'downshift';
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
+
 import { ArrowBorderWrapper } from '../styles/common';
 
 const Wrapper = styled.div`
@@ -63,10 +65,16 @@ const items = [
 ];
 
 const Autocomplete = ({ placeholder, name, className }) => {
+  const handleInputChange = throttle(value => {
+    // do request to server
+    console.log(value);
+  }, 300);
+
   return (
     <Downshift
       onChange={selection => console.log(selection)}
-      itemToString={item => (item ? item.provinceName : '')}>
+      itemToString={item => (item ? item.provinceName : '')}
+      onInputValueChange={handleInputChange}>
       {({
         getInputProps,
         getItemProps,
