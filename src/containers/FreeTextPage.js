@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 import PageWrapper from '../components/PageWrapper';
 import TextInput from '../components/TextInput';
@@ -32,13 +33,18 @@ function FreeTextPage() {
     number: '',
   });
 
+  const history = useHistory();
+
   const handleChange = ({ target: { name, value } }) => {
     setValues({ ...values, [name]: value });
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+
     console.log(values);
+
+    history.push('/results');
   };
 
   const disabled =
