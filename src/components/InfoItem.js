@@ -43,7 +43,7 @@ const ItemLabel = styled.div`
   color: ${props => props.theme.grey};
 `;
 
-function InfoItem({ title, className }) {
+function InfoItem({ title, className, options }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const dropDownRef = useRef(null);
@@ -58,18 +58,12 @@ function InfoItem({ title, className }) {
       </StyledArrowBorderWrapper>
       {isOpen && (
         <List>
-          <Item>
-            <ItemLabel>Address type</ItemLabel>
-            <div>Carretera</div>
-          </Item>
-          <Item>
-            <ItemLabel>Address type abbreviature</ItemLabel>
-            <div>crta.</div>
-          </Item>
-          <Item>
-            <ItemLabel>Address name</ItemLabel>
-            <div>Crta. de la coruna</div>
-          </Item>
+          {options.map(item => (
+            <Item>
+              <ItemLabel>{item.name}</ItemLabel>
+              <div>{item.value}</div>
+            </Item>
+          ))}
         </List>
       )}
     </Wrapper>
@@ -79,6 +73,12 @@ function InfoItem({ title, className }) {
 InfoItem.propTypes = {
   title: PropTypes.string.isRequired,
   className: PropTypes.string,
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
+    }).isRequired,
+  ).isRequired,
 };
 
 export default InfoItem;
