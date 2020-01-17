@@ -1,21 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import PageWrapper from '../components/PageWrapper';
 import Autocomplete from '../components/Autocomplete';
-
-const Wrapper = styled.div`
-  padding: 200px;
-  padding-top: 100px;
-`;
-
-const Title = styled.h1`
-  font-size: 7.9rem;
-  line-height: 103px;
-  color: ${props => props.theme.yellow};
-  font-weight: 700;
-  margin: 0;
-  margin-bottom: 70px;
-`;
 
 const Form = styled.form`
   display: flex;
@@ -36,8 +23,7 @@ const StyledAutocomplete = styled(Autocomplete)`
 
 function AutocompletePage() {
   return (
-    <Wrapper>
-      <Title>Inputs</Title>
+    <PageWrapper title="Inputs">
       <Form
         onSubmit={e => {
           e.preventDefault();
@@ -48,7 +34,7 @@ function AutocompletePage() {
         <StyledAutocomplete name="address" placeholder="Address" />
         <StyledAutocomplete name="number" placeholder="Number" />
       </Form>
-    </Wrapper>
+    </PageWrapper>
   );
 }
 

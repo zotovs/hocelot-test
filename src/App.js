@@ -4,6 +4,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import Header from './components/Header';
 import GlobalStyles from './styles/GlobalStyles';
 import AutocompletePage from './containers/AutocompletePage';
+import FreeTextPage from './containers/FreeTextPage';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           <AutocompletePage />
         </Route>
         <Route path="/free-text" exact>
-          freetext
+          <FreeTextPage />
         </Route>
         <Redirect to="/autocomplete" />
       </Switch>
