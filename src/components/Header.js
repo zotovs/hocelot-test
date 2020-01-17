@@ -9,7 +9,7 @@ const Wrapper = styled.div`
 const StyledLink = styled(NavLink)`
   display: inline-block;
   padding: 4px 8px;
-  color: ${props => props.theme.yellow1};
+  color: ${props => props.theme.yellow};
 
   &.active,
   &:hover {

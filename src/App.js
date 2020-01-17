@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Header from './components/Header';
 import GlobalStyles from './styles/GlobalStyles';
+import AutocompletePage from './containers/AutocompletePage';
 
 function App() {
   return (
@@ -11,7 +12,7 @@ function App() {
       <Header />
       <Switch>
         <Route path="/autocomplete" exact>
-          autocomplete
+          <AutocompletePage />
         </Route>
         <Route path="/free-text" exact>
           freetext

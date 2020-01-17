@@ -1,7 +1,7 @@
 const theme = {
-  yellow1: '#fdd226',
-  yellow2: '#fee892',
+  yellow: '#fdd226',
   black: '#000',
+  border: `2px solid #fdd226`,
 };
 
 export default theme;
