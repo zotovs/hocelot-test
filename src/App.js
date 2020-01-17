@@ -5,6 +5,7 @@ import Header from './components/Header';
 import GlobalStyles from './styles/GlobalStyles';
 import AutocompletePage from './containers/AutocompletePage';
 import FreeTextPage from './containers/FreeTextPage';
+import ResultsPage from './containers/ResultsPage';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         </Route>
         <Route path="/free-text" exact>
           <FreeTextPage />
+        </Route>
+        <Route path="/results" exact>
+          <ResultsPage />
         </Route>
         <Redirect to="/autocomplete" />
       </Switch>

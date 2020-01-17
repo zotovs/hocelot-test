@@ -2,18 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import Downshift from 'downshift';
 import PropTypes from 'prop-types';
+import { ArrowBorderWrapper } from '../styles/common';
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
-const InputWrapper = styled.div`
-  border: ${props => props.theme.border};
-  border-radius: 2px;
-`;
-
 const Input = styled.input`
-  padding: 20px;
+  padding: 10px 40px 10px 20px;
   width: 100%;
   border: none;
   background-color: transparent;
@@ -81,9 +77,9 @@ const Autocomplete = ({ placeholder, name, className }) => {
         getRootProps,
       }) => (
         <Wrapper className={className}>
-          <InputWrapper {...getRootProps({}, { suppressRefError: true })}>
+          <ArrowBorderWrapper {...getRootProps({}, { suppressRefError: true })}>
             <Input {...getInputProps({ name, placeholder })} />
-          </InputWrapper>
+          </ArrowBorderWrapper>
           {isOpen && (
             <Menu {...getMenuProps()}>
               {items.map((item, index) => (
