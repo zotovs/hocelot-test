@@ -42,11 +42,11 @@ function AutocompletePage() {
         onSubmit={e => {
           e.preventDefault();
         }}>
-        <StyledAutocomplete placeholder="Province" />
-        <StyledAutocomplete placeholder="Town" />
-        <StyledAutocomplete placeholder="Zip code" />
-        <StyledAutocomplete placeholder="Address" />
-        <StyledAutocomplete placeholder="Number" />
+        <StyledAutocomplete name="province" placeholder="Province" />
+        <StyledAutocomplete name="town" placeholder="Town" />
+        <StyledAutocomplete name="zip-code" placeholder="Zip code" />
+        <StyledAutocomplete name="address" placeholder="Address" />
+        <StyledAutocomplete name="number" placeholder="Number" />
       </Form>
     </Wrapper>
   );
