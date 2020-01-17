@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import { ArrowBorderWrapper } from '../styles/common';
+import useClickOutside from '../hooks/useClickOutside';
 
 const Wrapper = styled.div`
   position: relative;
@@ -45,8 +46,13 @@ const ItemLabel = styled.div`
 function InfoItem({ title, className }) {
   const [isOpen, setIsOpen] = useState(false);
 
+  const dropDownRef = useRef(null);
+  useClickOutside(dropDownRef, () => {
+    setIsOpen(false);
+  });
+
   return (
-    <Wrapper className={className}>
+    <Wrapper ref={dropDownRef} className={className}>
       <StyledArrowBorderWrapper onClick={() => setIsOpen(true)}>
         {title}
       </StyledArrowBorderWrapper>
