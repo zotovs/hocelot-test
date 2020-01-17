@@ -12,6 +12,11 @@ const StyledButton = styled.button`
   font-size: 1.8rem;
   color: ${props => props.theme.white};
   cursor: pointer;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.6;
+  }
 `;
 
 function Button({ children, ...rest }) {

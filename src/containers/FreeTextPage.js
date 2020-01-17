@@ -32,20 +32,62 @@ function FreeTextPage() {
     number: '',
   });
 
+  const handleChange = ({ target: { name, value } }) => {
+    setValues({ ...values, [name]: value });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(values);
+  };
+
+  const disabled =
+    !values.province ||
+    !values.town ||
+    !values.zipCode ||
+    !values.address ||
+    !values.number;
+
   return (
     <PageWrapper title="Inputs">
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-        }}>
+      <form onSubmit={handleSubmit}>
         <InputsWrapper>
-          <StyledTextInput name="province" label="Province" />
-          <StyledTextInput name="town" label="Town" />
-          <StyledTextInput type="number" name="zip-code" label="Zip code" />
-          <StyledTextInput name="address" label="Address" />
-          <StyledTextInput type="number" name="number" label="Number" />
+          <StyledTextInput
+            value={values.province}
+            onChange={handleChange}
+            name="province"
+            label="Province"
+          />
+          <StyledTextInput
+            value={values.town}
+            onChange={handleChange}
+            name="town"
+            label="Town"
+          />
+          <StyledTextInput
+            value={values.zipCode}
+            onChange={handleChange}
+            type="number"
+            name="zipCode"
+            label="Zip code"
+          />
+          <StyledTextInput
+            value={values.address}
+            onChange={handleChange}
+            name="address"
+            label="Address"
+          />
+          <StyledTextInput
+            value={values.number}
+            onChange={handleChange}
+            type="number"
+            name="number"
+            label="Number"
+          />
         </InputsWrapper>
-        <Button type="submit">Accepted</Button>
+        <Button disabled={disabled} type="submit">
+          Accepted
+        </Button>
       </form>
     </PageWrapper>
   );
