@@ -23,7 +23,7 @@ const StyledAutocomplete = styled(Autocomplete)`
 
 function AutocompletePage() {
   return (
-    <PageWrapper title="Inputs">
+    <PageWrapper title="Autocomplete">
       <Form
         onSubmit={e => {
           e.preventDefault();
