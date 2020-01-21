@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Redirect } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import PageWrapper from '../components/PageWrapper';
 import InfoItem from '../components/InfoItem';
@@ -13,42 +15,61 @@ const StyledInfoItem = styled(InfoItem)`
   width: 30%;
 `;
 
-const addressInfo = [
-  { name: 'Address Type', value: 'Carretera' },
-  { name: 'Address Type Abbreviature', value: 'CRTA.' },
-  { name: 'Address Name', value: 'CRTA. de la coruna' },
-  { name: 'Alternative Address Name', value: 'Carretera de la coruna' },
-  { name: 'Address Number', value: 18 },
-];
+function ResultsPage({ results }) {
+  if (!results) {
+    return <Redirect to="/free-text" />;
+  }
 
-const geolocation = [
-  { name: 'Town Name', value: 'Las rozas' },
-  { name: 'Alternative Town Name', value: 'Rozas' },
-  { name: 'City', value: 'Madrid' },
-  { name: 'Alternative City', value: 'Madrid' },
-  { name: 'Province', value: 'Madrid' },
-  { name: 'Alternative Province Name', value: 'Madrid' },
-  { name: 'Autonomous region name', value: 'Comunidad de madrid' },
-  { name: 'Alternative autonomous region name', value: 'comunidad de madrid' },
-  { name: 'Latitude', value: '40.323424' },
-  { name: 'Longtitude', value: '-3.8219381' },
-];
+  const addressInfo = [
+    { name: 'Address Type', value: results.addressType },
+    {
+      name: 'Address Type Abbreviature',
+      value: results.addressTypeAbbreviature,
+    },
+    { name: 'Address Name', value: results.addressName },
+    { name: 'Alternative Address Name', value: results.alternativeAddressName },
+    { name: 'Address Number', value: results.addressNumber },
+  ];
 
-const addressEnrichment = [
-  { name: 'alternative address type name cal', value: 'estrada da coruna' },
-  { name: 'alternative address type name eus', value: 'la coruna errepidea' },
-  {
-    name: 'alternative address type name cat',
-    value: 'carretera de la corunya',
-  },
-  { name: 'type', value: 'building' },
-  { name: 'usage', value: 'office' },
-  { name: 'sqm', value: '---' },
-  { name: 'land registry reference', value: '123452341unx' },
-  { name: 'land registry plot', value: '1231231231unx' },
-];
+  const geolocation = [
+    { name: 'Town Name', value: results.townName },
+    { name: 'Alternative Town Name', value: results.alternativeTownName },
+    { name: 'City', value: results.cityName },
+    { name: 'Alternative City', value: results.alternativeCityName },
+    { name: 'Province', value: results.provinceName },
+    {
+      name: 'Alternative Province Name',
+      value: results.alternativeProvinceName,
+    },
+    { name: 'Autonomous region name', value: results.autonomousRegionName },
+    {
+      name: 'Alternative autonomous region name',
+      value: results.alternativeAutonomousRegionName,
+    },
+    { name: 'Latitude', value: results.latitude },
+    { name: 'Longtitude', value: results.longitude },
+  ];
 
-function ResultsPage() {
+  const addressEnrichment = [
+    {
+      name: 'alternative address type name cal',
+      value: results.alternativeAddressTypeNameGAL,
+    },
+    {
+      name: 'alternative address type name eus',
+      value: results.alternativeAddressTypeNameEUS,
+    },
+    {
+      name: 'alternative address type name cat',
+      value: results.alternativeAddressTypeNameCAT,
+    },
+    { name: 'type', value: results.type },
+    { name: 'usage', value: results.usage },
+    { name: 'sqm', value: results.sqm },
+    { name: 'land registry reference', value: results.landRegistryReference },
+    { name: 'land registry plot', value: results.landRegistryPlot },
+  ];
+
   return (
     <PageWrapper title="Address Info">
       <Wrapper>
@@ -62,5 +83,10 @@ function ResultsPage() {
     </PageWrapper>
   );
 }
+
+ResultsPage.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  results: PropTypes.any,
+};
 
 export default ResultsPage;

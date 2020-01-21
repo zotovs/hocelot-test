@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 
 import Header from './components/Header';
@@ -8,6 +8,8 @@ import FreeTextPage from './containers/FreeTextPage';
 import ResultsPage from './containers/ResultsPage';
 
 function App() {
+  const [results, setResults] = useState(null);
+
   return (
     <div>
       <GlobalStyles />
@@ -17,10 +19,10 @@ function App() {
           <AutocompletePage />
         </Route>
         <Route path="/free-text" exact>
-          <FreeTextPage />
+          <FreeTextPage setResults={setResults} />
         </Route>
         <Route path="/results" exact>
-          <ResultsPage />
+          <ResultsPage results={results} />
         </Route>
         <Redirect to="/autocomplete" />
       </Switch>

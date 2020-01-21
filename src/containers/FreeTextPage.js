@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import PageWrapper from '../components/PageWrapper';
 import TextInput from '../components/TextInput';
 import Button from '../components/Button';
+import axiosInstance from '../config/axios';
 
 const InputsWrapper = styled.div`
   display: flex;
@@ -24,7 +26,49 @@ const StyledTextInput = styled(TextInput)`
   }
 `;
 
-function FreeTextPage() {
+const res = {
+  addressId: 145272,
+  townId: '13052',
+  townName: 'MALAGON',
+  alternativeTownName: null,
+  cityName: 'MALAGON',
+  alternativeCityName: null,
+  zipCodeList: ['13420'],
+  provinceId: '13',
+  provinceName: 'CIUDAD REAL',
+  alternativeProvinceName: null,
+  autonomousRegionId: '08',
+  autonomousRegionName: 'CASTILLA LA MANCHA',
+  alternativeAutonomousRegionName: null,
+  addressType: 'CALLE',
+  addressTypeAbbreviature: 'C',
+  alternativeAddressTypeNameGAL: null,
+  alternativeAddressTypeNameEUS: null,
+  alternativeAddressTypeNameCAT: null,
+  addressName: 'TERCIA',
+  alternativeAddressName: null,
+  addressNumber: '1',
+  addressKmNumber: null,
+  addressBlock: null,
+  addressStair: null,
+  addressFloor: '2',
+  addressDoor: 'A',
+  addressLetter: null,
+  latitude: 45.323456123,
+  longitude: 33.221566153,
+  sqm: 75,
+  type: '',
+  usage: '',
+  propertyClass: '',
+  landRegistryReference: '9999999 VH9999S 0001 WX',
+  landRegistryPlot: '9999999',
+  towmNameSimilarity: 100,
+  cityNameSimilarity: 100,
+  addressNameSimilarity: 100,
+  geoAddressResult: 3,
+};
+
+function FreeTextPage({ setResults }) {
   const [values, setValues] = useState({
     province: '',
     town: '',
@@ -39,12 +83,19 @@ function FreeTextPage() {
     setValues({ ...values, [name]: value });
   };
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const handleSubmit = async e => {
+    try {
+      e.preventDefault();
 
-    console.log(values);
+      // const res = await axiosInstance.get(`/address/check`, {
+      //   params: values,
+      // });
 
-    history.push('/results');
+      setResults(res);
+      history.push('/results');
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const disabled =
@@ -98,5 +149,9 @@ function FreeTextPage() {
     </PageWrapper>
   );
 }
+
+FreeTextPage.propTypes = {
+  setResults: PropTypes.func.isRequired,
+};
 
 export default FreeTextPage;

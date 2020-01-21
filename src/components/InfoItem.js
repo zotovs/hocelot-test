@@ -59,9 +59,9 @@ function InfoItem({ title, className, options }) {
       {isOpen && (
         <List>
           {options.map(item => (
-            <Item>
+            <Item key={item.name}>
               <ItemLabel>{item.name}</ItemLabel>
-              <div>{item.value}</div>
+              <div>{item.value || '---'}</div>
             </Item>
           ))}
         </List>
@@ -76,7 +76,7 @@ InfoItem.propTypes = {
   options: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     }).isRequired,
   ).isRequired,
 };
