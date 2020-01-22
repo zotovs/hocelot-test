@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Downshift from 'downshift';
 import PropTypes from 'prop-types';
-import throttle from 'lodash.throttle';
 
 import { ArrowBorderWrapper } from '../styles/common';
 
@@ -21,6 +20,7 @@ const Input = styled.input`
 
 const Menu = styled.ul`
   position: absolute;
+  overflow-y: auto;
   z-index: 2;
   top: 100%;
   width: 100%;
@@ -45,19 +45,41 @@ const MenuItem = styled.li`
   }
 `;
 
+const itemToString = (item, propertyName) => {
+  if (!item) {
+    return '';
+  }
+
+  if (Array.isArray(propertyName)) {
+    return propertyName
+      .reduce((acc, name) => {
+        if (item[name]) {
+          acc.push(item[name]);
+        }
+
+        return acc;
+      }, [])
+      .join(', ');
+  }
+
+  return item[propertyName];
+};
+
 const Autocomplete = ({
   placeholder,
   name,
+  type,
   propertyName,
   items,
   className,
+  disabled,
   onInputChange,
   onChange,
 }) => {
   return (
     <Downshift
       onChange={onChange}
-      itemToString={item => (item ? item[propertyName] : '')}
+      itemToString={item => itemToString(item, propertyName)}
       onInputValueChange={onInputChange}>
       {({
         getInputProps,
@@ -70,20 +92,20 @@ const Autocomplete = ({
       }) => (
         <Wrapper className={className}>
           <ArrowBorderWrapper {...getRootProps({}, { suppressRefError: true })}>
-            <Input {...getInputProps({ name, placeholder })} />
+            <Input {...getInputProps({ name, placeholder, disabled, type })} />
           </ArrowBorderWrapper>
           {isOpen && items.length > 0 && (
             <Menu {...getMenuProps()}>
               {items.map((item, index) => (
                 <MenuItem
                   {...getItemProps({
-                    key: item.provinceId,
+                    key: index,
                     index,
                     item,
                     highlighted: highlightedIndex === index,
                     active: selectedItem === item,
                   })}>
-                  {item[propertyName]}
+                  {itemToString(item, propertyName)}
                 </MenuItem>
               ))}
             </Menu>
@@ -98,11 +120,20 @@ Autocomplete.propTypes = {
   placeholder: PropTypes.string,
   className: PropTypes.string,
   name: PropTypes.string,
-  propertyName: PropTypes.string.isRequired,
+  propertyName: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.string),
+  ]).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   items: PropTypes.array.isRequired,
+  disabled: PropTypes.bool,
+  type: PropTypes.string,
   onInputChange: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
+};
+
+Autocomplete.defaultProps = {
+  type: 'text',
 };
 
 export default Autocomplete;

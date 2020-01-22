@@ -71,7 +71,7 @@ function AutocompletePage() {
   const [
     { provinceItems, zipCodeItems, townItems, addressItems },
     dispatch,
-  ] = useReducer(reducer, initialState);
+  ] = useState(reducer, initialState);
   const [values, setValues] = useState({
     province: null,
     zipCode: null,
@@ -97,33 +97,77 @@ function AutocompletePage() {
           e.preventDefault();
         }}>
         <StyledAutocomplete
-          name="province"
           placeholder="Province"
-          propertyName="provinceName"
+          propertyName={['provinceName', 'alternativeProvinceName']}
           items={provinceItems}
           onInputChange={value =>
             handleInputChange(PROVINCE, { search: value })
           }
           onChange={province => setValues({ ...values, province })}
         />
-        {/* <StyledAutocomplete
-          name={TOWN}
+        <StyledAutocomplete
           placeholder="Town"
-          propertyName="townName"
-          onInputChange={handleInputChange}
+          propertyName={[
+            'townName',
+            'alternativeTownName',
+            'cityName',
+            'alternativeCityName',
+          ]}
           items={townItems}
+          disabled={!values.province}
+          onInputChange={value =>
+            handleInputChange(TOWN, {
+              provinceId: values.province?.provinceId,
+              search: value,
+            })
+          }
+          onChange={town => setValues({ ...values, town })}
         />
         <StyledAutocomplete
-          name={ZIP_CODE}
           placeholder="Zip code"
-          propertyNam="zipCode"
+          propertyName="zipCode"
+          type="number"
+          items={zipCodeItems}
+          disabled={!values.town}
+          onInputChange={value =>
+            handleInputChange(ZIP_CODE, {
+              provinceId: values.province?.provinceId,
+              townId: values.town?.townId,
+              search: value,
+            })
+          }
+          onChange={zipCode => setValues({ ...values, zipCode })}
         />
         <StyledAutocomplete
-          name={ADDRESS}
           placeholder="Address"
-          propertyName="addressType"
+          propertyName={['addressName', 'alternativeAddressName']}
+          items={addressItems}
+          disabled={!values.town}
+          onInputChange={value =>
+            handleInputChange(ADDRESS, {
+              provinceId: values.province?.provinceId,
+              townId: values.town?.townId,
+              search: value,
+            })
+          }
+          onChange={addressName => setValues({ ...values, addressName })}
         />
-        <StyledAutocomplete name="number" placeholder="Number" /> */}
+        <StyledAutocomplete
+          placeholder="Number"
+          type="number"
+          propertyName={['addressNumber', 'addressKmNumber']}
+          items={addressItems}
+          disabled={!values.addressName}
+          onInputChange={value =>
+            handleInputChange(ADDRESS, {
+              provinceId: values.province?.provinceId,
+              townId: values.town?.townId,
+              addressName: values.addressName?.addressName,
+              search: value,
+            })
+          }
+          onChange={addressNumber => setValues({ ...values, addressNumber })}
+        />
       </Form>
     </PageWrapper>
   );
