@@ -79,8 +79,7 @@ const Autocomplete = ({
   return (
     <Downshift
       onChange={onChange}
-      itemToString={item => itemToString(item, propertyName)}
-      onInputValueChange={onInputChange}>
+      itemToString={item => itemToString(item, propertyName)}>
       {({
         getInputProps,
         getItemProps,
@@ -92,7 +91,17 @@ const Autocomplete = ({
       }) => (
         <Wrapper className={className}>
           <ArrowBorderWrapper {...getRootProps({}, { suppressRefError: true })}>
-            <Input {...getInputProps({ name, placeholder, disabled, type })} />
+            <Input
+              {...getInputProps({
+                name,
+                placeholder,
+                disabled,
+                type,
+                onChange(e) {
+                  onInputChange(e.target.value);
+                },
+              })}
+            />
           </ArrowBorderWrapper>
           {isOpen && items.length > 0 && (
             <Menu {...getMenuProps()}>

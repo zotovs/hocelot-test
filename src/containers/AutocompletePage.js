@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import throttle from 'lodash.throttle';
 
@@ -28,50 +28,8 @@ const ZIP_CODE = 'zip-code';
 const TOWN = 'town';
 const ADDRESS = 'address';
 
-const initialState = {
-  provinceItems: [],
-  zipCodeItems: [],
-  townItems: [],
-  addressItems: [],
-};
-
-const reducer = (state, { type, payload }) => {
-  switch (type) {
-    case PROVINCE: {
-      return {
-        ...state,
-        provinceItems: payload,
-      };
-    }
-    case ZIP_CODE: {
-      return {
-        ...state,
-        zipCodeItems: payload,
-      };
-    }
-    case TOWN: {
-      return {
-        ...state,
-        townItems: payload,
-      };
-    }
-    case ADDRESS: {
-      return {
-        ...state,
-        addressItems: payload,
-      };
-    }
-    default: {
-      throw new Error();
-    }
-  }
-};
-
 function AutocompletePage() {
-  const [
-    { provinceItems, zipCodeItems, townItems, addressItems },
-    dispatch,
-  ] = useState(reducer, initialState);
+  const [items, setItems] = useState([]);
   const [values, setValues] = useState({
     province: null,
     zipCode: null,
@@ -86,9 +44,14 @@ function AutocompletePage() {
         params: { limit: 10, ...params },
       });
 
-      dispatch({ type, payload: res.data.results });
+      setItems(res.data.results);
     }
   }, 500);
+
+  const handleChange = value => {
+    setItems([]);
+    setValues({ ...values, ...value });
+  };
 
   return (
     <PageWrapper title="Autocomplete">
@@ -99,11 +62,11 @@ function AutocompletePage() {
         <StyledAutocomplete
           placeholder="Province"
           propertyName={['provinceName', 'alternativeProvinceName']}
-          items={provinceItems}
+          items={items}
           onInputChange={value =>
             handleInputChange(PROVINCE, { search: value })
           }
-          onChange={province => setValues({ ...values, province })}
+          onChange={province => handleChange({ province })}
         />
         <StyledAutocomplete
           placeholder="Town"
@@ -113,7 +76,7 @@ function AutocompletePage() {
             'cityName',
             'alternativeCityName',
           ]}
-          items={townItems}
+          items={items}
           disabled={!values.province}
           onInputChange={value =>
             handleInputChange(TOWN, {
@@ -121,13 +84,13 @@ function AutocompletePage() {
               search: value,
             })
           }
-          onChange={town => setValues({ ...values, town })}
+          onChange={town => handleChange({ town })}
         />
         <StyledAutocomplete
           placeholder="Zip code"
           propertyName="zipCode"
           type="number"
-          items={zipCodeItems}
+          items={items}
           disabled={!values.town}
           onInputChange={value =>
             handleInputChange(ZIP_CODE, {
@@ -136,12 +99,12 @@ function AutocompletePage() {
               search: value,
             })
           }
-          onChange={zipCode => setValues({ ...values, zipCode })}
+          onChange={zipCode => handleChange({ zipCode })}
         />
         <StyledAutocomplete
           placeholder="Address"
           propertyName={['addressName', 'alternativeAddressName']}
-          items={addressItems}
+          items={items}
           disabled={!values.town}
           onInputChange={value =>
             handleInputChange(ADDRESS, {
@@ -150,13 +113,13 @@ function AutocompletePage() {
               search: value,
             })
           }
-          onChange={addressName => setValues({ ...values, addressName })}
+          onChange={addressName => handleChange({ addressName })}
         />
         <StyledAutocomplete
           placeholder="Number"
           type="number"
           propertyName={['addressNumber', 'addressKmNumber']}
-          items={addressItems}
+          items={items}
           disabled={!values.addressName}
           onInputChange={value =>
             handleInputChange(ADDRESS, {
@@ -166,7 +129,7 @@ function AutocompletePage() {
               search: value,
             })
           }
-          onChange={addressNumber => setValues({ ...values, addressNumber })}
+          onChange={addressNumber => handleChange({ addressNumber })}
         />
       </Form>
     </PageWrapper>
