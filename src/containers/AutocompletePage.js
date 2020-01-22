@@ -43,11 +43,13 @@ function AutocompletePage() {
 
   const handleInputChange = throttle(async (type, params) => {
     if (params.search.length >= 3) {
-      const res = await axios.get(`/${type}`, {
-        params: { limit: 10, ...params },
-      });
+      try {
+        const res = await axios.get(`/${type}`, {
+          params: { limit: 10, ...params },
+        });
 
-      setDropdownOptions({ isLoaded: true, items: res.data.results });
+        setDropdownOptions({ isLoaded: true, items: res.data.results });
+      } catch (error) {}
     }
   }, 500);
 

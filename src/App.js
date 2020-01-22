@@ -6,9 +6,24 @@ import GlobalStyles from './styles/GlobalStyles';
 import AutocompletePage from './containers/AutocompletePage';
 import FreeTextPage from './containers/FreeTextPage';
 import ResultsPage from './containers/ResultsPage';
+import LoginPage from './containers/LoginPage';
+import useAuth from './hooks/useAuth';
 
 function App() {
   const [results, setResults] = useState(null);
+
+  const { isLoggedIn, handleLogIn } = useAuth();
+
+  if (!isLoggedIn) {
+    return (
+      <>
+        <Route path="/" exact>
+          <LoginPage onLogin={handleLogIn} />
+        </Route>
+        <Redirect to="/" />
+      </>
+    );
+  }
 
   return (
     <div>
