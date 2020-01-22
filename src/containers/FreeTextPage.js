@@ -71,10 +71,10 @@ const res = {
 function FreeTextPage({ setResults }) {
   const [values, setValues] = useState({
     province: '',
-    town: '',
+    townName: '',
     zipCode: '',
-    address: '',
-    number: '',
+    addressName: '',
+    addressNumber: '',
   });
 
   const history = useHistory();
@@ -87,12 +87,14 @@ function FreeTextPage({ setResults }) {
     try {
       e.preventDefault();
 
-      // const res = await axiosInstance.get(`/address/check`, {
-      //   params: values,
-      // });
+      const response = await axiosInstance.get(`/address/check`, {
+        params: values,
+      });
 
-      setResults(res);
-      history.push('/results');
+      console.log(response);
+
+      // setResults(res);
+      // history.push('/results');
     } catch (error) {
       console.log(error);
     }
@@ -100,10 +102,10 @@ function FreeTextPage({ setResults }) {
 
   const disabled =
     !values.province ||
-    !values.town ||
+    !values.townName ||
     !values.zipCode ||
-    !values.address ||
-    !values.number;
+    !values.addressName ||
+    !values.addressNumber;
 
   return (
     <PageWrapper title="Inputs">
@@ -116,9 +118,9 @@ function FreeTextPage({ setResults }) {
             label="Province"
           />
           <StyledTextInput
-            value={values.town}
+            value={values.townName}
             onChange={handleChange}
-            name="town"
+            name="townName"
             label="Town"
           />
           <StyledTextInput
@@ -129,16 +131,16 @@ function FreeTextPage({ setResults }) {
             label="Zip code"
           />
           <StyledTextInput
-            value={values.address}
+            value={values.addressName}
             onChange={handleChange}
-            name="address"
+            name="addressName"
             label="Address"
           />
           <StyledTextInput
-            value={values.number}
+            value={values.addressNumber}
             onChange={handleChange}
             type="number"
-            name="number"
+            name="addressNumber"
             label="Number"
           />
         </InputsWrapper>

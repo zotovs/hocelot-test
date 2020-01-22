@@ -28,10 +28,26 @@ function AutocompletePage() {
         onSubmit={e => {
           e.preventDefault();
         }}>
-        <StyledAutocomplete name="province" placeholder="Province" />
-        <StyledAutocomplete name="town" placeholder="Town" />
-        <StyledAutocomplete name="zip-code" placeholder="Zip code" />
-        <StyledAutocomplete name="address" placeholder="Address" />
+        <StyledAutocomplete
+          name="province"
+          placeholder="Province"
+          propertyName="provinceName"
+        />
+        <StyledAutocomplete
+          name="town"
+          placeholder="Town"
+          propertyName="townName"
+        />
+        <StyledAutocomplete
+          name="zip-code"
+          placeholder="Zip code"
+          propertyNam="zipCode"
+        />
+        <StyledAutocomplete
+          name="address"
+          placeholder="Address"
+          propertyName="addressType"
+        />
         <StyledAutocomplete name="number" placeholder="Number" />
       </Form>
     </PageWrapper>

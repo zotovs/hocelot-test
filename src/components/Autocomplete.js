@@ -64,7 +64,7 @@ const items = [
   },
 ];
 
-const Autocomplete = ({ placeholder, name, className }) => {
+const Autocomplete = ({ placeholder, name, propertyName, className }) => {
   const handleInputChange = throttle(value => {
     // do request to server
     console.log(value);
@@ -73,7 +73,7 @@ const Autocomplete = ({ placeholder, name, className }) => {
   return (
     <Downshift
       onChange={selection => console.log(selection)}
-      itemToString={item => (item ? item.provinceName : '')}
+      itemToString={item => (item ? item[propertyName] : '')}
       onInputValueChange={handleInputChange}>
       {({
         getInputProps,
@@ -99,7 +99,7 @@ const Autocomplete = ({ placeholder, name, className }) => {
                     highlighted: highlightedIndex === index,
                     active: selectedItem === item,
                   })}>
-                  {item.provinceName}
+                  {item[propertyName]}
                 </MenuItem>
               ))}
             </Menu>
@@ -114,6 +114,7 @@ Autocomplete.propTypes = {
   placeholder: PropTypes.string,
   className: PropTypes.string,
   name: PropTypes.string,
+  propertyName: PropTypes.string.isRequired,
 };
 
 export default Autocomplete;
