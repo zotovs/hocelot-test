@@ -45,36 +45,20 @@ const MenuItem = styled.li`
   }
 `;
 
-const items = [
-  {
-    provinceId: '1',
-    provinceName: 'ÁLAVA',
-    alternativeProvinceName: 'ARABA',
-    autonomousRegionId: '16',
-    autonomousRegionName: 'PAÍS VASCO',
-    alternativeAutonomousRegionName: 'EUSKADI',
-  },
-  {
-    provinceId: '28',
-    provinceName: 'MADRID',
-    alternativeProvinceName: null,
-    autonomousRegionId: '13',
-    autonomousRegionName: 'COMUNIDAD DE MADRID',
-    alternativeAutonomousRegionName: null,
-  },
-];
-
-const Autocomplete = ({ placeholder, name, propertyName, className }) => {
-  const handleInputChange = throttle(value => {
-    // do request to server
-    console.log(value);
-  }, 300);
-
+const Autocomplete = ({
+  placeholder,
+  name,
+  propertyName,
+  items,
+  className,
+  onInputChange,
+  onChange,
+}) => {
   return (
     <Downshift
-      onChange={selection => console.log(selection)}
+      onChange={onChange}
       itemToString={item => (item ? item[propertyName] : '')}
-      onInputValueChange={handleInputChange}>
+      onInputValueChange={onInputChange}>
       {({
         getInputProps,
         getItemProps,
@@ -88,7 +72,7 @@ const Autocomplete = ({ placeholder, name, propertyName, className }) => {
           <ArrowBorderWrapper {...getRootProps({}, { suppressRefError: true })}>
             <Input {...getInputProps({ name, placeholder })} />
           </ArrowBorderWrapper>
-          {isOpen && (
+          {isOpen && items.length > 0 && (
             <Menu {...getMenuProps()}>
               {items.map((item, index) => (
                 <MenuItem
@@ -115,6 +99,10 @@ Autocomplete.propTypes = {
   className: PropTypes.string,
   name: PropTypes.string,
   propertyName: PropTypes.string.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
+  items: PropTypes.array.isRequired,
+  onInputChange: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default Autocomplete;
