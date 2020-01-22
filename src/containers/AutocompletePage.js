@@ -29,7 +29,10 @@ const TOWN = 'town';
 const ADDRESS = 'address';
 
 function AutocompletePage() {
-  const [items, setItems] = useState([]);
+  const [dropdownOptions, setDropdownOptions] = useState({
+    isLoaded: false,
+    items: [],
+  });
   const [values, setValues] = useState({
     province: null,
     zipCode: null,
@@ -39,17 +42,17 @@ function AutocompletePage() {
   });
 
   const handleInputChange = throttle(async (type, params) => {
-    if (params.search.length > 3) {
+    if (params.search.length >= 3) {
       const res = await axios.get(`/${type}`, {
         params: { limit: 10, ...params },
       });
 
-      setItems(res.data.results);
+      setDropdownOptions({ isLoaded: true, items: res.data.results });
     }
   }, 500);
 
   const handleChange = value => {
-    setItems([]);
+    setDropdownOptions({ isLoaded: false, items: [] });
     setValues({ ...values, ...value });
   };
 
@@ -62,7 +65,7 @@ function AutocompletePage() {
         <StyledAutocomplete
           placeholder="Province"
           propertyName={['provinceName', 'alternativeProvinceName']}
-          items={items}
+          dropdownOptions={dropdownOptions}
           onInputChange={value =>
             handleInputChange(PROVINCE, { search: value })
           }
@@ -76,7 +79,7 @@ function AutocompletePage() {
             'cityName',
             'alternativeCityName',
           ]}
-          items={items}
+          dropdownOptions={dropdownOptions}
           disabled={!values.province}
           onInputChange={value =>
             handleInputChange(TOWN, {
@@ -90,7 +93,7 @@ function AutocompletePage() {
           placeholder="Zip code"
           propertyName="zipCode"
           type="number"
-          items={items}
+          dropdownOptions={dropdownOptions}
           disabled={!values.town}
           onInputChange={value =>
             handleInputChange(ZIP_CODE, {
@@ -104,7 +107,7 @@ function AutocompletePage() {
         <StyledAutocomplete
           placeholder="Address"
           propertyName={['addressName', 'alternativeAddressName']}
-          items={items}
+          dropdownOptions={dropdownOptions}
           disabled={!values.town}
           onInputChange={value =>
             handleInputChange(ADDRESS, {
@@ -119,7 +122,7 @@ function AutocompletePage() {
           placeholder="Number"
           type="number"
           propertyName={['addressNumber', 'addressKmNumber']}
-          items={items}
+          dropdownOptions={dropdownOptions}
           disabled={!values.addressName}
           onInputChange={value =>
             handleInputChange(ADDRESS, {

@@ -70,7 +70,7 @@ const Autocomplete = ({
   name,
   type,
   propertyName,
-  items,
+  dropdownOptions,
   className,
   disabled,
   onInputChange,
@@ -103,22 +103,28 @@ const Autocomplete = ({
               })}
             />
           </ArrowBorderWrapper>
-          {isOpen && items.length > 0 && (
-            <Menu {...getMenuProps()}>
-              {items.map((item, index) => (
-                <MenuItem
-                  {...getItemProps({
-                    key: index,
-                    index,
-                    item,
-                    highlighted: highlightedIndex === index,
-                    active: selectedItem === item,
-                  })}>
-                  {itemToString(item, propertyName)}
-                </MenuItem>
-              ))}
-            </Menu>
-          )}
+          {isOpen &&
+            dropdownOptions.isLoaded &&
+            (dropdownOptions.items.length > 0 ? (
+              <Menu {...getMenuProps()}>
+                {dropdownOptions.items.map((item, index) => (
+                  <MenuItem
+                    {...getItemProps({
+                      key: index,
+                      index,
+                      item,
+                      highlighted: highlightedIndex === index,
+                      active: selectedItem === item,
+                    })}>
+                    {itemToString(item, propertyName)}
+                  </MenuItem>
+                ))}
+              </Menu>
+            ) : (
+              <Menu>
+                <MenuItem>Nothing was found</MenuItem>
+              </Menu>
+            ))}
         </Wrapper>
       )}
     </Downshift>
@@ -133,8 +139,11 @@ Autocomplete.propTypes = {
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.string),
   ]).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  items: PropTypes.array.isRequired,
+  dropdownOptions: PropTypes.shape({
+    isLoaded: PropTypes.bool.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    items: PropTypes.array.isRequired,
+  }).isRequired,
   disabled: PropTypes.bool,
   type: PropTypes.string,
   onInputChange: PropTypes.func.isRequired,
