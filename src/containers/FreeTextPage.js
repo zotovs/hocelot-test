@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import * as yup from 'yup';
 
 import PageWrapper from '../components/PageWrapper';
 import TextInput from '../components/TextInput';
@@ -67,9 +68,23 @@ const res = {
   geoAddressResult: 3,
 };
 
+const schema = yup.object().shape({
+  provinceId: yup
+    .string()
+    .required('Province is required')
+    .matches(/^\d{2}$/, 'Province must be 2 digits long'),
+  townName: yup.string().required('Town is required'),
+  zipCode: yup
+    .string()
+    .required('Zip-code is required')
+    .matches(/^\d{5}$/, 'Zip-code must be 5 digits long'),
+  addressName: yup.string().required('Address name is required'),
+  addressNumber: yup.string().required('Address number is required'),
+});
+
 function FreeTextPage({ setResults }) {
   const [values, setValues] = useState({
-    province: '',
+    provinceId: '',
     townName: '',
     zipCode: '',
     addressName: '',
@@ -86,34 +101,30 @@ function FreeTextPage({ setResults }) {
     try {
       e.preventDefault();
 
-      // const response = await axiosInstance.get(`/address/check`, {
-      //   params: values,
-      // });
+      schema.validateSync(values, { abortEarly: false });
 
-      // console.log(response);
+      const response = await axiosInstance.get(`/address/check`, {
+        params: values,
+      });
 
-      setResults(res);
-      history.push('/results');
+      // setResults(res);
+      // history.push('/results');
     } catch (error) {
-      console.log(error);
+      if (error.name === 'ValidationError') {
+        alert(error.errors.join('\n'));
+      }
     }
   };
-
-  const disabled =
-    !values.province ||
-    !values.townName ||
-    !values.zipCode ||
-    !values.addressName ||
-    !values.addressNumber;
 
   return (
     <PageWrapper title="Inputs">
       <form onSubmit={handleSubmit}>
         <InputsWrapper>
           <StyledTextInput
-            value={values.province}
+            value={values.provinceId}
             onChange={handleChange}
-            name="province"
+            name="provinceId"
+            type="number"
             label="Province"
           />
           <StyledTextInput
@@ -143,9 +154,7 @@ function FreeTextPage({ setResults }) {
             label="Number"
           />
         </InputsWrapper>
-        <Button disabled={disabled} type="submit">
-          Accepted
-        </Button>
+        <Button type="submit">Accepted</Button>
       </form>
     </PageWrapper>
   );
