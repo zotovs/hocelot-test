@@ -41,8 +41,8 @@ function AutocompletePage() {
     addressNumber: null,
   });
 
-  const handleInputChange = throttle(async (type, params) => {
-    if (params.search.length >= 3) {
+  const handleInputChange = throttle(async (type, params, minLength = 3) => {
+    if (params.search.length >= minLength) {
       try {
         const res = await axios.get(`/${type}`, {
           params: { limit: 10, ...params },
@@ -127,12 +127,16 @@ function AutocompletePage() {
           dropdownOptions={dropdownOptions}
           disabled={!values.addressName}
           onInputChange={value =>
-            handleInputChange(ADDRESS, {
-              provinceId: values.province?.provinceId,
-              townId: values.town?.townId,
-              addressName: values.addressName?.addressName,
-              search: value,
-            })
+            handleInputChange(
+              ADDRESS,
+              {
+                provinceId: values.province?.provinceId,
+                townId: values.town?.townId,
+                addressName: values.addressName?.addressName,
+                search: value,
+              },
+              1,
+            )
           }
           onChange={addressNumber => handleChange({ addressNumber })}
         />
