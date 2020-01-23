@@ -40,13 +40,12 @@ const res = {
   autonomousRegionId: '08',
   autonomousRegionName: 'CASTILLA LA MANCHA',
   alternativeAutonomousRegionName: null,
-  addressType: 'CALLE',
+  addressType: ['CALLE'],
   addressTypeAbbreviature: 'C',
-  alternativeAddressTypeNameGAL: null,
-  alternativeAddressTypeNameEUS: null,
-  alternativeAddressTypeNameCAT: null,
+  alternativeAddressTypeNameGAL: ['CALLE', 'SHMOLLE'],
+  alternativeAddressTypeNameEUS: ['CALLE'],
+  alternativeAddressTypeNameCAT: ['CALLE'],
   addressName: 'TERCIA',
-  alternativeAddressName: null,
   addressNumber: '1',
   addressKmNumber: null,
   addressBlock: null,
@@ -87,14 +86,14 @@ function FreeTextPage({ setResults }) {
     try {
       e.preventDefault();
 
-      const response = await axiosInstance.get(`/address/check`, {
-        params: values,
-      });
+      // const response = await axiosInstance.get(`/address/check`, {
+      //   params: values,
+      // });
 
-      console.log(response);
+      // console.log(response);
 
-      // setResults(res);
-      // history.push('/results');
+      setResults(res);
+      history.push('/results');
     } catch (error) {
       console.log(error);
     }

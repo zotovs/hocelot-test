@@ -27,7 +27,6 @@ function ResultsPage({ results }) {
       value: results.addressTypeAbbreviature,
     },
     { name: 'Address Name', value: results.addressName },
-    { name: 'Alternative Address Name', value: results.alternativeAddressName },
     { name: 'Address Number', value: results.addressNumber },
   ];
 

@@ -108,7 +108,7 @@ function AutocompletePage() {
         />
         <StyledAutocomplete
           placeholder="Address"
-          propertyName={['addressName', 'alternativeAddressName']}
+          propertyName="addressName"
           dropdownOptions={dropdownOptions}
           disabled={!values.town}
           onInputChange={value =>

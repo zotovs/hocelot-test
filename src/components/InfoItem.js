@@ -51,6 +51,18 @@ function InfoItem({ title, className, options }) {
     setIsOpen(false);
   });
 
+  const renderValue = value => {
+    if (!value) {
+      return '---';
+    }
+
+    if (Array.isArray(value)) {
+      return value.join(', ');
+    }
+
+    return value;
+  };
+
   return (
     <Wrapper ref={dropDownRef} className={className}>
       <StyledArrowBorderWrapper onClick={() => setIsOpen(true)}>
@@ -61,7 +73,7 @@ function InfoItem({ title, className, options }) {
           {options.map(item => (
             <Item key={item.name}>
               <ItemLabel>{item.name}</ItemLabel>
-              <div>{item.value || '---'}</div>
+              <div>{renderValue(item.value)}</div>
             </Item>
           ))}
         </List>
