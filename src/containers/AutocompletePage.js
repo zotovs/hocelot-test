@@ -88,12 +88,7 @@ function AutocompletePage() {
         />
         <StyledAutocomplete
           placeholder="Town"
-          propertyName={[
-            'townName',
-            'alternativeTownName',
-            'cityName',
-            'alternativeCityName',
-          ]}
+          propertyName={['townName', 'cityName']}
           dropdownOptions={dropdownOptions}
           disabled={!values.province}
           value={values.town}

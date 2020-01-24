@@ -58,7 +58,7 @@ const itemToString = (item, propertyName) => {
 
         return acc;
       }, [])
-      .join(', ');
+      .join(' / ');
   }
 
   return item[propertyName];
