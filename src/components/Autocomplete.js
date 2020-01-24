@@ -36,7 +36,6 @@ const Menu = styled.ul`
 
 const MenuItem = styled.li`
   padding: 0 20px;
-  font-weight: ${props => (props.active ? '500' : '400')};
   background-color: ${props =>
     props.highlighted ? 'rgba(0,0,0,0.05)' : 'transparent'};
 
@@ -73,12 +72,14 @@ const Autocomplete = ({
   dropdownOptions,
   className,
   disabled,
+  value,
   onInputChange,
   onChange,
 }) => {
   return (
     <Downshift
       onChange={onChange}
+      selectedItem={value}
       itemToString={item => itemToString(item, propertyName)}>
       {({
         getInputProps,
@@ -86,7 +87,6 @@ const Autocomplete = ({
         getMenuProps,
         isOpen,
         highlightedIndex,
-        selectedItem,
         getRootProps,
       }) => (
         <Wrapper className={className}>
@@ -114,7 +114,6 @@ const Autocomplete = ({
                       index,
                       item,
                       highlighted: highlightedIndex === index,
-                      active: selectedItem === item,
                     })}>
                     {itemToString(item, propertyName)}
                   </MenuItem>
@@ -146,6 +145,8 @@ Autocomplete.propTypes = {
   }).isRequired,
   disabled: PropTypes.bool,
   type: PropTypes.string,
+  // eslint-disable-next-line react/forbid-prop-types
+  value: PropTypes.object,
   onInputChange: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
 };

@@ -41,17 +41,21 @@ function AutocompletePage() {
     addressNumber: null,
   });
 
-  const handleInputChange = throttle(async (type, params, minLength = 3) => {
-    if (params.search.length >= minLength) {
-      try {
-        const res = await axios.get(`/${type}`, {
-          params: { limit: 10, ...params },
-        });
+  const handleInputChange = throttle(
+    async (type, params, minLength = 3) => {
+      if (params.search.length >= minLength) {
+        try {
+          const res = await axios.get(`/${type}`, {
+            params: { limit: 10, ...params },
+          });
 
-        setDropdownOptions({ isLoaded: true, items: res.data.results });
-      } catch (error) {}
-    }
-  }, 500);
+          setDropdownOptions({ isLoaded: true, items: res.data.results });
+        } catch (error) {}
+      }
+    },
+    500,
+    { leading: false },
+  );
 
   const handleChange = value => {
     setDropdownOptions({ isLoaded: false, items: [] });
@@ -68,10 +72,19 @@ function AutocompletePage() {
           placeholder="Province"
           propertyName={['provinceName', 'alternativeProvinceName']}
           dropdownOptions={dropdownOptions}
+          value={values.province}
           onInputChange={value =>
             handleInputChange(PROVINCE, { search: value })
           }
-          onChange={province => handleChange({ province })}
+          onChange={province =>
+            handleChange({
+              province,
+              zipCode: null,
+              town: null,
+              addressName: null,
+              addressNumber: null,
+            })
+          }
         />
         <StyledAutocomplete
           placeholder="Town"
@@ -83,13 +96,21 @@ function AutocompletePage() {
           ]}
           dropdownOptions={dropdownOptions}
           disabled={!values.province}
+          value={values.town}
           onInputChange={value =>
             handleInputChange(TOWN, {
               provinceId: values.province?.provinceId,
               search: value,
             })
           }
-          onChange={town => handleChange({ town })}
+          onChange={town =>
+            handleChange({
+              town,
+              zipCode: null,
+              addressName: null,
+              addressNumber: null,
+            })
+          }
         />
         <StyledAutocomplete
           placeholder="Zip code"
@@ -97,6 +118,7 @@ function AutocompletePage() {
           type="number"
           dropdownOptions={dropdownOptions}
           disabled={!values.town}
+          value={values.zipCode}
           onInputChange={value =>
             handleInputChange(ZIP_CODE, {
               provinceId: values.province?.provinceId,
@@ -104,13 +126,20 @@ function AutocompletePage() {
               search: value,
             })
           }
-          onChange={zipCode => handleChange({ zipCode })}
+          onChange={zipCode =>
+            handleChange({
+              zipCode,
+              addressName: null,
+              addressNumber: null,
+            })
+          }
         />
         <StyledAutocomplete
           placeholder="Address"
           propertyName="addressName"
           dropdownOptions={dropdownOptions}
           disabled={!values.town}
+          value={values.addressName}
           onInputChange={value =>
             handleInputChange(ADDRESS, {
               provinceId: values.province?.provinceId,
@@ -118,7 +147,9 @@ function AutocompletePage() {
               search: value,
             })
           }
-          onChange={addressName => handleChange({ addressName })}
+          onChange={addressName =>
+            handleChange({ addressName, addressNumber: null })
+          }
         />
         <StyledAutocomplete
           placeholder="Number"
@@ -126,6 +157,7 @@ function AutocompletePage() {
           propertyName={['addressNumber', 'addressKmNumber']}
           dropdownOptions={dropdownOptions}
           disabled={!values.addressName}
+          value={values.addressNumber}
           onInputChange={value =>
             handleInputChange(
               ADDRESS,
