@@ -45,6 +45,7 @@ function TextInput({ label, value, type, name, className, ...rest }) {
         {label}
         <Input
           {...rest}
+          value={value}
           type={type}
           name={name}
           onFocus={() => setIsFocused(true)}

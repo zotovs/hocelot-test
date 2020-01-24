@@ -27,47 +27,6 @@ const StyledTextInput = styled(TextInput)`
   }
 `;
 
-const res = {
-  addressId: 145272,
-  townId: '13052',
-  townName: 'MALAGON',
-  alternativeTownName: null,
-  cityName: 'MALAGON',
-  alternativeCityName: null,
-  zipCodeList: ['13420'],
-  provinceId: '13',
-  provinceName: 'CIUDAD REAL',
-  alternativeProvinceName: null,
-  autonomousRegionId: '08',
-  autonomousRegionName: 'CASTILLA LA MANCHA',
-  alternativeAutonomousRegionName: null,
-  addressType: ['CALLE'],
-  addressTypeAbbreviature: 'C',
-  alternativeAddressTypeNameGAL: ['CALLE', 'SHMOLLE'],
-  alternativeAddressTypeNameEUS: ['CALLE'],
-  alternativeAddressTypeNameCAT: ['CALLE'],
-  addressName: 'TERCIA',
-  addressNumber: '1',
-  addressKmNumber: null,
-  addressBlock: null,
-  addressStair: null,
-  addressFloor: '2',
-  addressDoor: 'A',
-  addressLetter: null,
-  latitude: 45.323456123,
-  longitude: 33.221566153,
-  sqm: 75,
-  type: '',
-  usage: '',
-  propertyClass: '',
-  landRegistryReference: '9999999 VH9999S 0001 WX',
-  landRegistryPlot: '9999999',
-  towmNameSimilarity: 100,
-  cityNameSimilarity: 100,
-  addressNameSimilarity: 100,
-  geoAddressResult: 3,
-};
-
 const schema = yup.object().shape({
   provinceId: yup
     .string()
@@ -82,7 +41,7 @@ const schema = yup.object().shape({
   addressNumber: yup.string().required('Address number is required'),
 });
 
-function FreeTextPage({ setResults }) {
+function FreeTextPage({ onSetResults }) {
   const [values, setValues] = useState({
     provinceId: '',
     townName: '',
@@ -107,8 +66,8 @@ function FreeTextPage({ setResults }) {
         params: values,
       });
 
-      // setResults(res);
-      // history.push('/results');
+      onSetResults(response.data.results[0]);
+      history.push('/results');
     } catch (error) {
       if (error.name === 'ValidationError') {
         alert(error.errors.join('\n'));
@@ -161,7 +120,7 @@ function FreeTextPage({ setResults }) {
 }
 
 FreeTextPage.propTypes = {
-  setResults: PropTypes.func.isRequired,
+  onSetResults: PropTypes.func.isRequired,
 };
 
 export default FreeTextPage;

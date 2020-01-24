@@ -10,9 +10,19 @@ import LoginPage from './containers/LoginPage';
 import useAuth from './hooks/useAuth';
 
 function App() {
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState({
+    loaded: false,
+    item: null,
+  });
 
   const { isLoggedIn, handleLogIn } = useAuth();
+
+  const handleSetResults = item => {
+    setResults({
+      loaded: true,
+      item,
+    });
+  };
 
   if (!isLoggedIn) {
     return (
@@ -34,7 +44,7 @@ function App() {
           <AutocompletePage />
         </Route>
         <Route path="/free-text" exact>
-          <FreeTextPage setResults={setResults} />
+          <FreeTextPage onSetResults={handleSetResults} />
         </Route>
         <Route path="/results" exact>
           <ResultsPage results={results} />

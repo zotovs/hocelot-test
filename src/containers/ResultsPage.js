@@ -9,6 +9,7 @@ import InfoItem from '../components/InfoItem';
 const Wrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  font-size: 2.2rem;
 `;
 
 const StyledInfoItem = styled(InfoItem)`
@@ -16,57 +17,71 @@ const StyledInfoItem = styled(InfoItem)`
 `;
 
 function ResultsPage({ results }) {
-  if (!results) {
+  if (!results.loaded) {
     return <Redirect to="/free-text" />;
   }
 
+  if (!results.item) {
+    return (
+      <PageWrapper title="Address Info">
+        <Wrapper>Nothing was found</Wrapper>
+      </PageWrapper>
+    );
+  }
+
   const addressInfo = [
-    { name: 'Address Type', value: results.addressType },
+    { name: 'Address Type', value: results.item.addressType },
     {
       name: 'Address Type Abbreviature',
-      value: results.addressTypeAbbreviature,
+      value: results.item.addressTypeAbbreviature,
     },
-    { name: 'Address Name', value: results.addressName },
-    { name: 'Address Number', value: results.addressNumber },
+    { name: 'Address Name', value: results.item.addressName },
+    { name: 'Address Number', value: results.item.addressNumber },
   ];
 
   const geolocation = [
-    { name: 'Town Name', value: results.townName },
-    { name: 'Alternative Town Name', value: results.alternativeTownName },
-    { name: 'City', value: results.cityName },
-    { name: 'Alternative City', value: results.alternativeCityName },
-    { name: 'Province', value: results.provinceName },
+    { name: 'Town Name', value: results.item.townName },
+    { name: 'Alternative Town Name', value: results.item.alternativeTownName },
+    { name: 'City', value: results.item.cityName },
+    { name: 'Alternative City', value: results.item.alternativeCityName },
+    { name: 'Province', value: results.item.provinceName },
     {
       name: 'Alternative Province Name',
-      value: results.alternativeProvinceName,
+      value: results.item.alternativeProvinceName,
     },
-    { name: 'Autonomous region name', value: results.autonomousRegionName },
+    {
+      name: 'Autonomous region name',
+      value: results.item.autonomousRegionName,
+    },
     {
       name: 'Alternative autonomous region name',
-      value: results.alternativeAutonomousRegionName,
+      value: results.item.alternativeAutonomousRegionName,
     },
-    { name: 'Latitude', value: results.latitude },
-    { name: 'Longtitude', value: results.longitude },
+    { name: 'Latitude', value: results.item.latitude },
+    { name: 'Longtitude', value: results.item.longitude },
   ];
 
   const addressEnrichment = [
     {
       name: 'alternative address type name cal',
-      value: results.alternativeAddressTypeNameGAL,
+      value: results.item.alternativeAddressTypeNameGAL,
     },
     {
       name: 'alternative address type name eus',
-      value: results.alternativeAddressTypeNameEUS,
+      value: results.item.alternativeAddressTypeNameEUS,
     },
     {
       name: 'alternative address type name cat',
-      value: results.alternativeAddressTypeNameCAT,
+      value: results.item.alternativeAddressTypeNameCAT,
     },
-    { name: 'type', value: results.type },
-    { name: 'usage', value: results.usage },
-    { name: 'sqm', value: results.sqm },
-    { name: 'land registry reference', value: results.landRegistryReference },
-    { name: 'land registry plot', value: results.landRegistryPlot },
+    { name: 'type', value: results.item.type },
+    { name: 'usage', value: results.item.usage },
+    { name: 'sqm', value: results.item.sqm },
+    {
+      name: 'land registry reference',
+      value: results.item.landRegistryReference,
+    },
+    { name: 'land registry plot', value: results.item.landRegistryPlot },
   ];
 
   return (
@@ -84,8 +99,11 @@ function ResultsPage({ results }) {
 }
 
 ResultsPage.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  results: PropTypes.any,
+  results: PropTypes.shape({
+    loaded: PropTypes.bool.isRequired,
+    // eslint-disable-next-line react/forbid-prop-types
+    item: PropTypes.object,
+  }).isRequired,
 };
 
 export default ResultsPage;
